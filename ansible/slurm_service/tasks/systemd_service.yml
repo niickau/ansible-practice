@@ -1,0 +1,6 @@
+---
+- name: Setup systemd service
+  template:
+    dest: /usr/lib/systemd/system/slurm_service.service
+    src: templates/slurm_service.systemd.j2
+  notify: Start slurm_service

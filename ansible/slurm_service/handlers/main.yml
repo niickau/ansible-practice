@@ -1,0 +1,8 @@
+---
+# handlers file for service
+- name: Start slurm_service
+  systemd:
+    name: "{{ systemd_service_name }}"
+    state: started
+    enabled: yes
+  become: true

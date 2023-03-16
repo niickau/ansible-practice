@@ -1,0 +1,20 @@
+---
+# Variable configuration.
+- include_tasks: variables.yml
+
+# Setup/install tasks.
+- include_tasks: setup.yml
+
+# Install ruby from source when ruby_install_from_source is true.
+- include_tasks: install-from-source.yml
+  when: ruby_install_from_source
+
+- name: Add user installed RubyGems bin directory to global $PATH.
+  copy:
+    src: files/rubygems.sh
+    dest: /etc/profile.d/rubygems.sh
+    mode: 0644
+
+- include_tasks: configuration.yml
+- include_tasks: app.yml
+- include_tasks: systemd_service.yml

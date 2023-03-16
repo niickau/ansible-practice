@@ -1,0 +1,33 @@
+---
+workspace: /root
+
+# Slurm_service variables
+slurm_service_root: /slurm_service/app
+slurm_service_user: vagrant
+systemd_service_name: slurm_service
+
+# Whether this role should install Bundler.
+ruby_install_bundler: true
+
+# A list of Ruby gems to install.
+ruby_install_gems:
+  - name: bundler
+  - name: nokogiri
+    version: '1.8.2'
+  - name: pg
+    version: '0.21.0'
+  - name: execjs
+  - name: therubyracer
+
+# The user account under which Ruby gems will be installed.
+ruby_install_gems_user: vagrant
+
+# If set to True, ruby will be installed from source, using the version set with
+# the 'ruby_version' variable instead of using a package.
+ruby_install_from_source: true
+ruby_download_url: http://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.4.tar.gz
+ruby_version: 2.6.4
+ruby_source_configure_command: ./configure --enable-shared
+
+# Default should usually work, but this will be overridden on Ubuntu 14.04.
+ruby_rubygems_package_name: rubygems

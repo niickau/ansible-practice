@@ -1,0 +1,25 @@
+[Unit]
+Description=Slurm Service
+
+[Service]
+Type=simple
+SyslogIdentifier=slurm_service
+User={{ slurm_service_user }}
+PIDFile={{ slurm_service_root }}/tmp/pids/web.pid
+WorkingDirectory={{ slurm_service_root }}
+
+Environment="SECRET_KEY_BASE={{ secret_key_base }}"
+Environment="RAILS_ENV={{ rails_env }}"
+Environment="RAILS_LOG_TO_STDOUT={{ rails_log_to_stdout }}"
+Environment="DB_HOST={{ db_host }}"
+Environment="DB_PORT={{ db_port }}"
+Environment="DB_NAME={{ db_name }}"
+Environment="DB_USER={{ db_user }}"
+Environment="DB_PASSWORD={{ db_password }}"
+
+ExecStart=/bin/bash -l -c "{{ slurm_service_root }}/Gemfile bundle exec rake db:migrate && bundle exec puma -b unix:///var/run/puma.sock -e $RAILS_ENV config.ru"
+ExecReload=/bin/kill -s USR2 $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+---
+- name: Define ruby_packages.
+  set_fact:
+    ruby_packages: "{{ __ruby_packages }}"
+  when: ruby_packages is not defined

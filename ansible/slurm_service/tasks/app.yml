@@ -1,0 +1,21 @@
+---
+- name: "Copy slurm_service app code"
+  ansible.builtin.copy:
+    src: files/app/
+    dest: "{{ slurm_service_root }}"
+    owner: "{{ slurm_service_user }}"
+    group: "{{ slurm_service_user }}"
+    mode: "0644"
+
+- name: Install requirements for an app
+  ansible.builtin.shell: |
+    bundle config build.nokogiri --use-system-libraries
+    bundle config set --local clean 'true'
+    bundle config set --local without 'development'
+    bundle install --no-cache
+  args:
+    chdir: "{{ slurm_service_root }}"
+  become: yes
+  become_method: sudo
+  become_user: "{{ slurm_service_user }}"
+  ignore_errors: true

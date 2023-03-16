@@ -1,0 +1,41 @@
+##################################################
+# Final Practice for Ansible Course
+##################################################
+---
+- name: Playbook for slurm practice
+  hosts: worker
+  become: true
+  vars:
+    secret_key_base: 
+    rails_env: production
+    rails_log_to_stdout: 1
+    db_host: 127.0.0.1
+    db_port: 5432
+    db_name: app_db
+    db_user: app_user
+    db_password: password
+
+    postgresql_databases:
+      - name: "{{ db_name }}"
+    postgresql_users:
+      - name: "{{ db_user }}"
+        password: "{{ db_password }}"
+     
+  roles:
+      - role: postgres
+      - role: slurm_service
+      - role: nginxinc.nginx
+  
+  post_tasks:
+    - name: "Copy nginx config"
+      ansible.builtin.copy:
+        src: "./slurm_service/files/app/config/nginx.conf"
+        dest: "/etc/nginx/nginx.conf"
+
+    - name: "Reload nginx"
+      ansible.builtin.service:
+        name: "nginx"
+        state: "reloaded"
+
+    
+
