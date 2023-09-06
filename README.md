@@ -1,4 +1,4 @@
-# slurm_ansible_practice
+# ansible-practice
 Final variant of ansible playbook and roles for deploy test ruby service
 
 Steps to reproduce:
